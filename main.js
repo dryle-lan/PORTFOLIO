@@ -1,0 +1,187 @@
+/* ============================================================
+   main.js — CDL Portfolio | Shared JavaScript
+   ============================================================
+
+   ╔══════════════════════════════════════════════════════╗
+   ║  ★  PROJECTS — EDIT HERE TO ADD / UPDATE PROJECTS  ★ ║
+   ╚══════════════════════════════════════════════════════╝
+
+   To add a new project: copy one object below and paste it
+   as a new entry inside the `projects` array.
+
+   Fields:
+     title       — Project name
+     description — Short summary (1–2 sentences)
+     tags        — Array of tech/skills used
+     link        — URL to live project or repo (use "#" as placeholder)
+     image       — Path or URL to a screenshot (use "" to show placeholder)
+
+   ============================================================ */
+
+const projects = [
+  {
+    title: "Project Alpha",
+    description: "A placeholder project showcasing what you've built. Replace this with a real description of your work and what problem it solves.",
+    tags: ["HTML", "CSS", "JavaScript"],
+    link: "#",
+    image: ""  // e.g. "assets/project-alpha.png" or a full URL
+  },
+  {
+    title: "Project Beta",
+    description: "Another placeholder project. Describe the challenge, your approach, and the outcome. Keep it concise and outcome-focused.",
+    tags: ["Python", "API", "UI Design"],
+    link: "#",
+    image: ""
+  },
+  {
+    title: "Project Gamma",
+    description: "A third showcase project. This card is generated dynamically — add as many projects as you like by appending objects to the array above.",
+    tags: ["CSS", "Animation", "Figma"],
+    link: "#",
+    image: ""
+  }
+];
+
+/* ============================================================
+   CARD RENDERER
+   Builds project cards from the array above.
+   Used on both index.html (featured) and projects.html (all).
+   ============================================================ */
+
+/**
+ * Render project cards into a container element.
+ * @param {HTMLElement} container  — The grid element to fill
+ * @param {number}      limit      — Max cards to render (0 = all)
+ */
+function renderProjects(container, limit = 0) {
+  if (!container) return;
+  const list = limit > 0 ? projects.slice(0, limit) : projects;
+
+  list.forEach((p, i) => {
+    const card = document.createElement('article');
+    card.className = 'project-card reveal';
+    card.style.transitionDelay = `${i * 0.08}s`;
+
+    // Image or placeholder
+    const imgHTML = p.image
+      ? `<img src="${p.image}" alt="${p.title}" loading="lazy">`
+      : `<div class="project-img-placeholder">[ project preview ]</div>`;
+
+    // Tags
+    const tagsHTML = p.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+    card.innerHTML = `
+      <div class="project-img-wrap">${imgHTML}</div>
+      <div class="project-body">
+        <h3 class="project-title">${p.title}</h3>
+        <p class="project-desc">${p.description}</p>
+        <div class="project-tags">${tagsHTML}</div>
+        <a href="${p.link}" class="project-link" target="_blank" rel="noopener">
+          View Project
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+/* ============================================================
+   NAVBAR — hamburger toggle + active link
+   ============================================================ */
+function initNav() {
+  const hamburger  = document.querySelector('.hamburger');
+  const mobileNav  = document.querySelector('.mobile-nav');
+
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+
+    // Close when a link is tapped
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
+  }
+
+  // Mark active nav link based on current page
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a, .mobile-nav a').forEach(link => {
+    const href = link.getAttribute('href');
+    if (
+      href === currentPage ||
+      (currentPage === '' && href === 'index.html') ||
+      (currentPage === 'index.html' && href === 'index.html')
+    ) {
+      link.classList.add('active');
+    }
+  });
+}
+
+/* ============================================================
+   SCROLL REVEAL — Intersection Observer
+   ============================================================ */
+function initScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); // animate once
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  // Observe all .reveal and .reveal-stagger elements
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => {
+    observer.observe(el);
+  });
+}
+
+/* ============================================================
+   LOGO IMAGE FALLBACK
+   If logo image fails to load, hide it (the text "CDL" is always shown)
+   ============================================================ */
+function initLogoFallback() {
+  const logoImg = document.getElementById('logo-img');
+  if (logoImg) {
+    logoImg.addEventListener('error', () => {
+      logoImg.style.display = 'none';
+    });
+  }
+}
+
+/* ============================================================
+   BLINKING CURSOR on hero tagline
+   ============================================================ */
+function initCursor() {
+  const tagline = document.querySelector('.hero-tagline');
+  if (!tagline) return;
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  tagline.appendChild(cursor);
+}
+
+/* ============================================================
+   INIT — runs on every page
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  initNav();
+  initScrollReveal();
+  initLogoFallback();
+  initCursor();
+
+  // Projects page: render all cards
+  const allGrid = document.getElementById('all-projects-grid');
+  if (allGrid) renderProjects(allGrid, 0);
+
+  // Home page: render featured cards (first 3)
+  const featuredGrid = document.getElementById('featured-projects-grid');
+  if (featuredGrid) renderProjects(featuredGrid, 3);
+});
