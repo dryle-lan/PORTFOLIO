@@ -22,7 +22,7 @@ const projects = [
   {
     title: "CDL Checkers",
     description: "Classic checkers. Modern feel. No downloads required.",
-    tags: ["HTML", "CSS", "JavaScript", "GAME", "BOARD GAME", "MINIMALIST"],
+    tags: ["HTML", "CSS", "JavaScript", "GAME", "BOARD GAME", "MINIMALIST", "DARK THEME", "MULTIPLAYER"],
     link: "https://checkers.lanticsechristiandryle.workers.dev/",
     image: "assets/checker.png"  // e.g. "assets/project-alpha.png" or a full URL
   },
