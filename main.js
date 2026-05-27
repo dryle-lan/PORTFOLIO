@@ -22,22 +22,22 @@ const projects = [
   {
     title: "CDL Checkers",
     description: "Classic checkers. Modern feel. No downloads required.",
-    tags: ["HTML", "CSS", "JavaScript"],
+    tags: ["HTML", "CSS", "JavaScript", "GAME", "BOARD GAME", "MINIMALIST"],
     link: "https://checkers.lanticsechristiandryle.workers.dev/",
     image: "assets/checkers.png"  // e.g. "assets/project-alpha.png" or a full URL
   },
   {
-    title: "Project Beta",
-    description: "Another placeholder project. Describe the challenge, your approach, and the outcome. Keep it concise and outcome-focused.",
-    tags: ["Python", "API", "UI Design"],
-    link: "#",
-    image: ""
+    title: "task.",
+    description: "AA minimalist task manager with a dark blue theme. Add, edit, and organize tasks with filters, due dates, and drag-and-drop reordering — all saved locally in your browser.",
+    tags: ["TASK-MANAGER", "HTML", "CSS", "JavaScript", "LOCAL STORAGE", "DARK THEME", "MINIMALIST"],
+    link: "https://todolist.lanticsechristiandryle.workers.dev/",
+    image: "assets/todolist.png"
   },
   {
-    title: "Project Gamma",
-    description: "A third showcase project. This card is generated dynamically — add as many projects as you like by appending objects to the array above.",
-    tags: ["CSS", "Animation", "Figma"],
-    link: "#",
+    title: "CALCULATOR",
+    description: "A simple calculator with a clean design and smooth animations.",
+    tags: ["HTML", "CSS", "JavaScript"],
+    link: "",
     image: ""
   }
 ];
